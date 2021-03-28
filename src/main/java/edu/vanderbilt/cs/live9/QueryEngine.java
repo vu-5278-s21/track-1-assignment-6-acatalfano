@@ -5,6 +5,7 @@ import edu.vanderbilt.cs.live7.AttributesStrategy;
 import edu.vanderbilt.cs.live7.ProximityStreamDB;
 import edu.vanderbilt.cs.live9.ast.ExpressionNode;
 import edu.vanderbilt.cs.live9.ast.visitor.PrintVisitor;
+import edu.vanderbilt.cs.live9.ast.visitor.QueryVisitor;
 import edu.vanderbilt.cs.live9.expr.*;
 
 import java.util.Map;
@@ -12,7 +13,11 @@ import java.util.stream.Stream;
 
 public class QueryEngine {
 
-    public static <T> Stream<DataAndPosition<T>> execute(ProximityStreamDB<T> db, AttributesStrategy<T> attrs, String querystr){
+    public static <T> Stream<DataAndPosition<T>> execute(
+        ProximityStreamDB<T> db,
+        AttributesStrategy<T> attrs,
+        String querystr
+    ) {
         Expression<T, Stream<DataAndPosition<T>>> root = parseQuery(querystr);
         Context ctx = new Context<>();
         ctx.setAttributesStrategy(attrs);
@@ -20,7 +25,9 @@ public class QueryEngine {
         return root.evaluate(ctx);
     }
 
-    private static <T> Expression<T, Stream<DataAndPosition<T>>> parseQuery(String querystr) {
+    private static <T> Expression<T, Stream<DataAndPosition<T>>> parseQuery(
+        String querystr
+    ) {
 
         // @ToDo
         //
@@ -81,13 +88,16 @@ public class QueryEngine {
         // This will print out the abstract syntax tree
         // raw.accept(new PrintVisitor());
 
+        QueryVisitor<T> visitor = new QueryVisitor<>();
+        raw.accept(visitor);
+
         // You have to a QueryVisitor and use it like this to
         // complete the QueryEngine:
         //
-        return null;
+        return visitor.getRoot();
     }
 
-    public static DataAndPosition<Map<String,?>> data(Map<String,?> m){
+    public static DataAndPosition<Map<String, ?>> data(Map<String, ?> m) {
         return new DataAndPosition<Map<String, ?>>() {
             @Override
             public Map<String, ?> getData() {
@@ -106,16 +116,18 @@ public class QueryEngine {
         };
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         // This is how the abstract syntax tree is generated:
-        ExpressionNode expr = QueryParser.parse(
-            "(find " +
+        ExpressionNode expr = QueryParser
+            .parse(
+                "(find " +
                     "     (near -45.0 -145.0 2) " +
                     "     (where " +
                     "          (> :height 8)" +
                     "     )" +
-                    ")");
+                    ")"
+            );
 
         // This will print out the tree structure for you to the console
         expr.accept(new PrintVisitor());
@@ -159,48 +171,69 @@ public class QueryEngine {
 
         // Now, to evaluate the query against a database, we have
         // to create a database and context to execute the query.
-        DataAndPosition data = data(MapUtils.of(
-                "height", 10.0,
-                "age", 32.0,
-                "lat", -90.0,
-                "lon", -180.0
-        ));
+        DataAndPosition data = data(
+            MapUtils
+                .of(
+                    "height", 10.0,
+                    "age", 32.0,
+                    "lat", -90.0,
+                    "lon", -180.0
+                )
+        );
 
-        DataAndPosition data2 = data(MapUtils.of(
-                "age", 56.0,
-                "height", 8.0,
-                "lat", -90.0,
-                "lon", -180.0
-        ));
+        DataAndPosition data2 = data(
+            MapUtils
+                .of(
+                    "age", 56.0,
+                    "height", 8.0,
+                    "lat", -90.0,
+                    "lon", -180.0
+                )
+        );
 
         ProximityStreamDB db = null; // replace with your implementation and using a MapAttributesStrategy
         db.insert(data);
         db.insert(data2);
-        Context<Map<String,?>> ctx = new Context<>();
+        Context<Map<String, ?>> ctx = new Context<>();
         ctx.setAttributesStrategy(new MapAttributesStrategy());
         ctx.setDb(db);
 
         // Finally, we can execute the query with the context.
-        Stream<DataAndPosition<Map<String,?>>> result = find.evaluate(ctx);
+        Stream<DataAndPosition<Map<String, ?>>> result = find.evaluate(ctx);
 
         // Print the result of the query
-        result.forEach(m -> System.out.println(m.getLatitude() + "," + m.getLongitude() + " -- " + m.getData()));
+        result
+            .forEach(
+                m -> System.out
+                    .println(
+                        m.getLatitude() + "," + m.getLongitude() + " -- " + m.getData()
+                    )
+            );
 
 
 
         // This should produce the same result as the manually created
         // query above
-        Stream<DataAndPosition<Map<String,?>>> result2 =
-                QueryEngine.execute(db,
-                        new MapAttributesStrategy(),
-                        "(find " +
-                                "     (near -45.0 -145.0 2) " +
-                                "     (where " +
-                                "          (> :height 8)" +
-                                "     )" +
-                                ")");
+        Stream<DataAndPosition<Map<String, ?>>> result2 =
+            QueryEngine
+                .execute(
+                    db,
+                    new MapAttributesStrategy(),
+                    "(find " +
+                        "     (near -45.0 -145.0 2) " +
+                        "     (where " +
+                        "          (> :height 8)" +
+                        "     )" +
+                        ")"
+                );
 
-        result2.forEach(m -> System.out.println(m.getLatitude() + "," + m.getLongitude() + " -- " + m.getData()));
+        result2
+            .forEach(
+                m -> System.out
+                    .println(
+                        m.getLatitude() + "," + m.getLongitude() + " -- " + m.getData()
+                    )
+            );
     }
 
 }

@@ -1,6 +1,6 @@
 package edu.vanderbilt.cs.live9.expr;
 
-public class GreaterThanExpression<T> implements Expression<T,Boolean> {
+public class GreaterThanExpression<T> implements CompositeExpression<T, Boolean> {
 
     private Expression leftChild;
     private Expression rightChild;

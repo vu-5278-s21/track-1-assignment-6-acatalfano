@@ -2,26 +2,31 @@ package edu.vanderbilt.cs.live9.ast;
 
 import java.util.List;
 
+import edu.vanderbilt.cs.live9.expr.Expression;
+
 public class ExpressionNode implements Node {
 
     private Node leftParen = new LParenNode();
 
-    private Node operation;
+    private LiteralNode operation;
 
     private List<Node> arguments;
 
     private Node rightParen = new RParenNode();
 
-    public ExpressionNode(Node operation, List<Node> arguments) {
+    public ExpressionNode(
+        LiteralNode operation,
+        List<Node> arguments
+    ) {
         this.operation = operation;
         this.arguments = arguments;
     }
 
-    public Node getOperation() {
+    public LiteralNode getOperation() {
         return operation;
     }
 
-    public void setOperation(Node operation) {
+    public void setOperation(LiteralNode operation) {
         this.operation = operation;
     }
 
@@ -33,11 +38,11 @@ public class ExpressionNode implements Node {
         this.arguments = arguments;
     }
 
-    public void accept(AstVisitor visitor){
+    public void accept(AstVisitor visitor) {
         visitor.visit(this);
         leftParen.accept(visitor);
         operation.accept(visitor);
-        for(Node arg : arguments){
+        for(Node arg : arguments) {
             arg.accept(visitor);
         }
         rightParen.accept(visitor);
