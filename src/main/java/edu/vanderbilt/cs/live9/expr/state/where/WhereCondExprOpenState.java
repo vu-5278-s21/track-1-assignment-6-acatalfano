@@ -16,13 +16,14 @@ public class WhereCondExprOpenState extends WhereState implements OpenState {
     @Override
     public void literalNode(QueryVisitor<?> visitor, LiteralNode node) {
         ExpressionType type = node.interpret();
+        final State destinationState =
+            new WhereCondExprClosedState(finalDestinationState);
         if (type == ExpressionType.AND) {
-            visitor.setState(new AndInitializedState(finalDestinationState));
-        } else if (type == ExpressionType.GREATER_THAN
-            || type == ExpressionType.LESS_THAN
+            visitor.setState(new AndInitializedState(destinationState));
+        } else if (
+            type == ExpressionType.GREATER_THAN || type == ExpressionType.LESS_THAN
         ) {
-            visitor
-                .setState(new ConditionalInitializedState(finalDestinationState, type));
+            visitor.setState(new ConditionalInitializedState(destinationState, type));
         } else {
             throw new IllegalStateException("literalNode() called in illegal state");
         }

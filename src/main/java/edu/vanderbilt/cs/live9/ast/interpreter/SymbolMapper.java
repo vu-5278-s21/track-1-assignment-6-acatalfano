@@ -19,6 +19,7 @@ public class SymbolMapper {
         expressionNodeMap.put("find", ExpressionType.FIND);
         expressionNodeMap.put("where", ExpressionType.WHERE);
         expressionNodeMap.put("and", ExpressionType.AND);
+        expressionNodeMap.put("near", ExpressionType.NEAR);
     }
 
     public ExpressionType getType(LiteralNode node) {

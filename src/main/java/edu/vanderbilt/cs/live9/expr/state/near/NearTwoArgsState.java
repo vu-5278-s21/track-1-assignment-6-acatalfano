@@ -3,7 +3,6 @@ package edu.vanderbilt.cs.live9.expr.state.near;
 import edu.vanderbilt.cs.live9.ast.LiteralNode;
 import edu.vanderbilt.cs.live9.ast.interpreter.ExpressionType;
 import edu.vanderbilt.cs.live9.ast.visitor.QueryVisitor;
-import edu.vanderbilt.cs.live9.expr.state.State;
 import edu.vanderbilt.cs.live9.expr.state.find.FindState;
 
 public class NearTwoArgsState extends NearState {

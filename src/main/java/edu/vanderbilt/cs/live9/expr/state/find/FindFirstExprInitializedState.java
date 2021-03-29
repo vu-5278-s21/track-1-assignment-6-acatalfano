@@ -4,7 +4,8 @@ import edu.vanderbilt.cs.live9.ast.visitor.QueryVisitor;
 
 public class FindFirstExprInitializedState implements FindState {
     @Override
-    public void expressionNode(QueryVisitor<?> visitor) {
+    public void leftParenthesis(QueryVisitor<?> visitor) {
         visitor.setState(new FindFirstExprOpenState());
     }
+
 }

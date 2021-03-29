@@ -14,21 +14,14 @@ public class AndSecondExprOpenState extends AndState {
     @Override
     public void literalNode(QueryVisitor<?> visitor, LiteralNode node) {
         ExpressionType type = node.interpret();
+        State destinationState = new AndSecondExprClosedState(finalDestinationState);
+
         if (type == ExpressionType.AND) {
-            visitor
-                .setState(
-                    new AndInitializedState(
-                        new AndSecondExprClosedState(finalDestinationState)
-                    )
-                );
-        } else if (type == ExpressionType.LESS_THAN
-            || type == ExpressionType.GREATER_THAN) {
-            visitor
-                .setState(
-                    new ConditionalInitializedState(
-                        new AndSecondExprClosedState(finalDestinationState), type
-                    )
-                );
+            visitor.setState(new AndInitializedState(destinationState));
+        } else if (
+            type == ExpressionType.LESS_THAN || type == ExpressionType.GREATER_THAN
+        ) {
+            visitor.setState(new ConditionalInitializedState(destinationState, type));
         } else {
             throw new IllegalStateException("literalNode() called in illegal state");
         }
