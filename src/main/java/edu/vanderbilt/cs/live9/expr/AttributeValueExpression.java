@@ -5,7 +5,7 @@ import edu.vanderbilt.cs.live7.Attribute;
 
 import java.util.Collection;
 
-public class AttributeValueExpression implements Expression {
+public class AttributeValueExpression implements TerminalExpression {
 
     private final String attribute;
 
@@ -18,11 +18,15 @@ public class AttributeValueExpression implements Expression {
 
         Object data = ((DataAndPosition)ctx.getTarget()).getData();
 
-        Collection<Attribute> attrs = ctx.getAttributesStrategy()
-                .getAttributes(data);
+        Collection<Attribute> attrs = ctx
+            .getAttributesStrategy()
+            .getAttributes(data);
 
-        return attrs.stream().filter(a -> a.getName().equals(this.attribute))
-                .map(a -> a.getValue())
-                .findFirst().orElse(null);
+        return attrs
+            .stream()
+            .filter(a -> a.getName().equals(this.attribute))
+            .map(a -> a.getValue())
+            .findFirst()
+            .orElse(null);
     }
 }

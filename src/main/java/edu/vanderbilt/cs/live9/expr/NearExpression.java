@@ -5,9 +5,10 @@ import edu.vanderbilt.cs.live6.Position;
 
 import java.util.stream.Stream;
 
-public class NearExpression<T> implements Expression<T, Stream<DataAndPosition<T>>> {
+public class NearExpression<T> implements
+    CompositeExpression<T, Stream<DataAndPosition<T>>> {
 
-    private Expression<T,Double> leftChild;
+    private Expression<T, Double> leftChild;
     private Expression<T, Double> middleChild;
     private Expression<T, Double> rightChild;
 
@@ -37,8 +38,12 @@ public class NearExpression<T> implements Expression<T, Stream<DataAndPosition<T
 
     @Override
     public Stream<DataAndPosition<T>> evaluate(Context<T> ctx) {
-        return ctx.getDb().nearby(
-                Position.with(leftChild.evaluate(ctx),middleChild.evaluate(ctx)),
-                rightChild.evaluate(ctx).intValue()).stream();
+        return ctx
+            .getDb()
+            .nearby(
+                Position.with(leftChild.evaluate(ctx), middleChild.evaluate(ctx)),
+                rightChild.evaluate(ctx).intValue()
+            )
+            .stream();
     }
 }

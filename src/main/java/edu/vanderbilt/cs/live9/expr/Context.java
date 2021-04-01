@@ -9,7 +9,7 @@ public class Context<T> {
 
     private ProximityStreamDB<T> db;
 
-    private AttributesStrategy attributesStrategy;
+    private AttributesStrategy<?> attributesStrategy;
 
     public Object getTarget() {
         return target;
@@ -27,11 +27,11 @@ public class Context<T> {
         this.db = db;
     }
 
-    public AttributesStrategy getAttributesStrategy() {
+    public AttributesStrategy<?> getAttributesStrategy() {
         return attributesStrategy;
     }
 
-    public void setAttributesStrategy(AttributesStrategy attributesStrategy) {
+    public void setAttributesStrategy(AttributesStrategy<?> attributesStrategy) {
         this.attributesStrategy = attributesStrategy;
     }
 }

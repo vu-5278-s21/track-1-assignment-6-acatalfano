@@ -1,9 +1,9 @@
 package edu.vanderbilt.cs.live9.expr;
 
-public class AndExpression<T> implements Expression<T,Boolean>{
+public class AndExpression<T> implements CompositeExpression<T, Boolean> {
 
-    private Expression<T,Boolean> leftChild;
-    private Expression<T,Boolean> rightChild;
+    private Expression<T, Boolean> leftChild;
+    private Expression<T, Boolean> rightChild;
 
     public Expression<T, Boolean> getLeftChild() {
         return leftChild;

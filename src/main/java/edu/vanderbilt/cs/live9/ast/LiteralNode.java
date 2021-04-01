@@ -1,7 +1,11 @@
 package edu.vanderbilt.cs.live9.ast;
 
+import edu.vanderbilt.cs.live9.ast.interpreter.ExpressionType;
+import edu.vanderbilt.cs.live9.ast.interpreter.SymbolMapper;
+
 public class LiteralNode implements Node {
 
+    private SymbolMapper symbolMapper = new SymbolMapper();
     private String value;
 
     public LiteralNode(String value) {
@@ -19,5 +23,9 @@ public class LiteralNode implements Node {
     @Override
     public void accept(AstVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public ExpressionType interpret() {
+        return symbolMapper.getType(this);
     }
 }

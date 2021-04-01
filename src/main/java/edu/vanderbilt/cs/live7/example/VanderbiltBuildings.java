@@ -2,6 +2,10 @@ package edu.vanderbilt.cs.live7.example;
 
 import edu.vanderbilt.cs.live6.DataAndPosition;
 import edu.vanderbilt.cs.live6.Position;
+import edu.vanderbilt.cs.live6.ProximityDB;
+import edu.vanderbilt.cs.live6.ProximityDBFactory;
+
+import edu.vanderbilt.cs.live7.Attribute;
 import edu.vanderbilt.cs.live7.ProximityStreamDB;
 
 import java.util.Collection;

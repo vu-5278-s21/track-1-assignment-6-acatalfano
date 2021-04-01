@@ -1,6 +1,6 @@
 package edu.vanderbilt.cs.live9.expr;
 
-public class NumberExpression<T> implements Expression<T,Double> {
+public class NumberExpression<T> implements TerminalExpression<T, Double> {
 
     private final double number;
 
