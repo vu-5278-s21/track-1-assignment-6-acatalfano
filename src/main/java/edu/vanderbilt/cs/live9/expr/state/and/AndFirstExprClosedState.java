@@ -1,16 +1,10 @@
 package edu.vanderbilt.cs.live9.expr.state.and;
 
 import edu.vanderbilt.cs.live9.ast.visitor.QueryVisitor;
-import edu.vanderbilt.cs.live9.expr.state.State;
 
-public class AndFirstExprClosedState extends AndState {
-    public AndFirstExprClosedState(State finalDestinationState) {
-        super(finalDestinationState);
-    }
-
+public class AndFirstExprClosedState implements AndState {
     @Override
     public void expressionNode(QueryVisitor<?> visitor) {
-        visitor.setState(new AndSecondExprInitializedState(finalDestinationState));
+        visitor.setState(new AndSecondExprInitializedState());
     }
-
 }

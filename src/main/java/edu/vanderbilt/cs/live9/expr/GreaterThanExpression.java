@@ -1,26 +1,6 @@
 package edu.vanderbilt.cs.live9.expr;
 
-public class GreaterThanExpression<T> implements CompositeExpression<T, Boolean> {
-
-    private Expression leftChild;
-    private Expression rightChild;
-
-    public Expression getLeftChild() {
-        return leftChild;
-    }
-
-    public void setLeftChild(Expression leftChild) {
-        this.leftChild = leftChild;
-    }
-
-    public Expression getRightChild() {
-        return rightChild;
-    }
-
-    public void setRightChild(Expression rightChild) {
-        this.rightChild = rightChild;
-    }
-
+public class GreaterThanExpression<T> extends ConditionalExpression<T> {
     @Override
     public Boolean evaluate(Context<T> ctx) {
         Number lhs = (Number)leftChild.evaluate(ctx);

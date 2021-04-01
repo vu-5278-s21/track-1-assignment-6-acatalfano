@@ -10,7 +10,8 @@ public class SymbolMapper {
 
     private static final String DOUBLE_REGEX =
         "^(?:(?:-?\\d+\\.?\\d*)|(?:-?\\d*\\.?\\d+))$";
-    private static final String ATTRIBUTE_VALUE_REGEX = "^:[\\$_a-zA-Z][\\$\\w]*$";
+    private static final String ATTRIBUTE_VALUE_REGEX =
+        "^:[\\$_a-zA-Z\\d\\-][\\$\\w\\d\\-]*$";
 
     static {
         expressionNodeMap = new HashMap<>();

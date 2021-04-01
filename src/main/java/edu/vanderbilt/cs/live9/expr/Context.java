@@ -11,10 +11,6 @@ public class Context<T> {
 
     private AttributesStrategy<?> attributesStrategy;
 
-    // @ToDo, WhereExpression.java calls this and casts to Stream<DataAndPosition<T>>
-    //      while AttributeValueExpression.java calls this and casts to DataAndPosition (raw type)
-    // ... probably need to change "target" into w/e it needs to be (maybe 2 things)
-    // ... or change implementations of the Expressions
     public Object getTarget() {
         return target;
     }

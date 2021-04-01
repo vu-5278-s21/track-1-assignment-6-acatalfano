@@ -1,5 +1,6 @@
 package edu.vanderbilt.cs.live9.ast.visitor;
 
+import java.util.Stack;
 import java.util.stream.Stream;
 
 import edu.vanderbilt.cs.live6.DataAndPosition;
@@ -17,9 +18,35 @@ public class QueryVisitor<T> implements AstVisitor {
 
     private Expression<T, Stream<DataAndPosition<T>>> root;
     private State state = new InitialState();
+    private Stack<State> queuedStates = new Stack<>();
+    private Stack<Expression<?, ?>> expressions = new Stack<>();
+
+    public void setRoot() {
+        root = popTopExpression();
+    }
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public void queueState(State state) {
+        queuedStates.push(state);
+    }
+
+    public void setQueuedState() {
+        state = queuedStates.empty() ? null : queuedStates.pop();
+    }
+
+    public void storeExpression(Expression<?, ?> expression) {
+        expressions.push(expression);
+    }
+
+    public Expression<?, ?> peekTopExpression() {
+        return expressions.empty() ? null : expressions.peek();
+    }
+
+    public <U, V> Expression<U, V> popTopExpression() {
+        return expressions.empty() ? null : (Expression<U, V>)expressions.pop();
     }
 
     public Expression<T, Stream<DataAndPosition<T>>> getRoot() {
@@ -29,38 +56,22 @@ public class QueryVisitor<T> implements AstVisitor {
 
     @Override
     public void visit(ExpressionNode n) {
-        System.out
-            .println("Visit expression node: \"" + n.getOperation().getValue() + "\"");
         state.expressionNode(this);
-        // Expression<?, ?> expression = n.build();
-        // root = (Expression<T, Stream<DataAndPosition<T>>>)expression;
     }
 
     @Override
     public void visit(LiteralNode l) {
-        System.out.println("Visit literal node: \"" + l.getValue() + "\"");
         state.literalNode(this, l);
-        // Expression<?, ?> literalExpression = l.build();
     }
 
     @Override
     public void visit(LParenNode l) {
-        System.out.println("Visit left-paren node");
         state.leftParenthesis(this);
-        // @ToDo kill this vvv
-        // LParenNode other = (l == null) ? null : l;
-        // return;
-        //throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override
     public void visit(RParenNode r) {
-        System.out.println("Visit right-paren node");
         state.rightParenthesis(this);
-        // @ToDo kill this vvv
-        // RParenNode other = (r == null) ? null : r;
-        // return;
-        //throw new UnsupportedOperationException("Not implemented");
     }
 
 }

@@ -1,16 +1,19 @@
 package edu.vanderbilt.cs.live9.expr.state.where;
 
 import edu.vanderbilt.cs.live9.ast.visitor.QueryVisitor;
-import edu.vanderbilt.cs.live9.expr.state.State;
+import edu.vanderbilt.cs.live9.expr.Expression;
+import edu.vanderbilt.cs.live9.expr.WhereExpression;
 
-public class WhereCondExprClosedState extends WhereState {
-    public WhereCondExprClosedState(State finalDestinationState) {
-        super(finalDestinationState);
-    }
-
+public class WhereCondExprClosedState implements WhereState {
     @Override
     public void rightParenthesis(QueryVisitor<?> visitor) {
-        visitor.setState(finalDestinationState);
+        setChild(visitor);
+        visitor.setQueuedState();
     }
 
+    private <T> void setChild(QueryVisitor<?> visitor) {
+        Expression<T, Boolean> filterExpr = visitor.popTopExpression();
+        WhereExpression<T> whereExpr = (WhereExpression<T>)visitor.peekTopExpression();
+        whereExpr.setFilterExpression(filterExpr);
+    }
 }

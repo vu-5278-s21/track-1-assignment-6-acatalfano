@@ -1,12 +1,13 @@
 package edu.vanderbilt.cs.live9.expr.state.near;
 
+import edu.vanderbilt.cs.live9.ast.LiteralNode;
+import edu.vanderbilt.cs.live9.ast.visitor.QueryVisitor;
+import edu.vanderbilt.cs.live9.expr.NumberExpression;
 import edu.vanderbilt.cs.live9.expr.state.State;
-import edu.vanderbilt.cs.live9.expr.state.find.FindState;
 
-public abstract class NearState implements State {
-    protected final FindState finalDesitinationState;
-
-    protected NearState(FindState finalDestinationState) {
-        this.finalDesitinationState = finalDestinationState;
+public interface NearState extends State {
+    default void createNumberExpression(QueryVisitor<?> visitor, LiteralNode node) {
+        double value = Double.parseDouble(node.getValue());
+        visitor.storeExpression(new NumberExpression<>(value));
     }
 }
